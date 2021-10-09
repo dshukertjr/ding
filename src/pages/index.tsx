@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { SITE_NAME } from '../utils/constants'
 
-const Home: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <div>
       <Head>
@@ -21,4 +21,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Page
