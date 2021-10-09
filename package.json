@@ -9,6 +9,7 @@
     "lint": "tsc --project ./ --pretty --noEmit && eslint . --ext js,jsx,ts,tsx --fix"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.24.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "^10.3.7",

@@ -6,7 +6,7 @@ const Page: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>{{ SITE_NAME }} | party quiz game</title>
+        <title>{SITE_NAME} | party quiz game</title>
         <meta
           name="description"
           content={`${SITE_NAME} is a simple fun quiz game where one user can be a host and others compete who can answer the most!`}
