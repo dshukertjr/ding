@@ -2,6 +2,10 @@
 
 A simple party quiz app where a host can create sequence of quizzes and players can compete to see who can answer them the quickest. 
 
+## Figma
+
+https://www.figma.com/file/oPdWdleBT7JY7vmvjWombD/Untitled?node-id=0%3A1
+
 ## SQL
 
 ```sql
