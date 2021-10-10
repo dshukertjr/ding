@@ -95,30 +95,76 @@ const QuestionForm: FC<{
           label="Enter your question..."
         ></FormField>
       </div>
-      <ChoiceFormField color={ChoiceColor.red} isSelected={true} index={0}></ChoiceFormField>
-      <ChoiceFormField color={ChoiceColor.blue} isSelected={false} index={1}></ChoiceFormField>
-      <ChoiceFormField color={ChoiceColor.green} isSelected={false} index={2}></ChoiceFormField>
-      <ChoiceFormField color={ChoiceColor.yellow} isSelected={false} index={3}></ChoiceFormField>
+      <ChoiceFormField
+        color={ChoiceColor.red}
+        isSelected={questions[index].answer === 0}
+        questionIndex={index}
+        questions={questions}
+        setQuestions={setQuestions}
+        index={0}
+      ></ChoiceFormField>
+      <ChoiceFormField
+        color={ChoiceColor.blue}
+        isSelected={questions[index].answer === 1}
+        questionIndex={index}
+        questions={questions}
+        setQuestions={setQuestions}
+        index={1}
+      ></ChoiceFormField>
+      <ChoiceFormField
+        color={ChoiceColor.green}
+        isSelected={questions[index].answer === 2}
+        questionIndex={index}
+        questions={questions}
+        setQuestions={setQuestions}
+        index={2}
+      ></ChoiceFormField>
+      <ChoiceFormField
+        color={ChoiceColor.yellow}
+        isSelected={questions[index].answer === 3}
+        questionIndex={index}
+        questions={questions}
+        setQuestions={setQuestions}
+        index={3}
+      ></ChoiceFormField>
       <div className="border mt-12"></div>
     </div>
   )
 }
 
-const ChoiceFormField: FC<{ color: ChoiceColor; isSelected: boolean; index: number }> = ({
-  color,
-  isSelected,
-  index,
-}) => {
+const ChoiceFormField: FC<{
+  color: ChoiceColor
+  isSelected: boolean
+  index: number
+  questionIndex: number
+  questions: Question[]
+  setQuestions: React.Dispatch<React.SetStateAction<Question[]>>
+}> = ({ color, isSelected, index, questionIndex, questions, setQuestions }) => {
   return (
     <div className="flex items-center mb-6">
-      <button type="button" className="py-2 px-4">
+      <button
+        type="button"
+        className="py-2 px-4"
+        onClick={() => {
+          const newQuestions = [...questions]
+          newQuestions[questionIndex].answer = index
+          setQuestions(newQuestions)
+        }}
+      >
         {isSelected ? (
           <CheckCircleIcon className="w-6 h-6 text-green-500"></CheckCircleIcon>
         ) : (
           <XCircleIcon className="w-6 h-6 text-red-500"></XCircleIcon>
         )}
       </button>
-      <FormField label={`Choice ${index + 1}`} borderColor={color}></FormField>
+      <FormField
+        onChange={(event) => {
+          questions[questionIndex].choices[index].choice = event.target.value
+          setQuestions(questions)
+        }}
+        label={`Choice ${index + 1}`}
+        borderColor={color}
+      ></FormField>
     </div>
   )
 }
