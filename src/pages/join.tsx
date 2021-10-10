@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import React from 'react'
+import AppBar from '../components/app-bar'
+import Wrapper from '../components/wrapper'
 import { SITE_NAME } from '../utils/constants'
 
 const Page: NextPage = () => {
@@ -15,7 +17,9 @@ const Page: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main></main>
+      <AppBar title="Join a Room"></AppBar>
+
+      <Wrapper></Wrapper>
     </div>
   )
 }

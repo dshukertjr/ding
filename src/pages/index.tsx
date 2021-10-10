@@ -3,6 +3,8 @@ import Head from 'next/head'
 import React from 'react'
 import { SITE_NAME } from '../utils/constants'
 import Link from 'next/link'
+import Image from 'next/image'
+import logo from '../../public/img/logo.svg'
 
 const Page: NextPage = () => {
   return (
@@ -17,7 +19,9 @@ const Page: NextPage = () => {
       </Head>
 
       <main className="h-screen">
-        <img className="pt-5" src="/img/top-logo.svg" alt={`${SITE_NAME} logo`} />
+        <div className="h-96 bg-party bg-center flex items-center justify-center">
+          <Image src={logo} />
+        </div>
         <div className="flex flex-col items-stretch px-6 mt-8">
           <Link href="/create">
             <a className="border-2 border-gray-700 text-gray-700 py-4 text-center rounded mb-8">
