@@ -4,9 +4,10 @@ import React, { FC, useState } from 'react'
 import AppBar from '../components/app-bar'
 import FormField from '../components/form-field'
 import Wrapper from '../components/wrapper'
-import { SITE_NAME } from '../utils/constants'
+import { SITE_NAME, supabase } from '../utils/constants'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/outline'
 import { BorderColor as ChoiceColor, Question } from '../utils/types'
+import { useRouter } from 'next/dist/client/router'
 
 const Page: NextPage = () => {
   const [questions, setQuestions] = useState<Question[]>([
@@ -42,9 +43,40 @@ const Page: NextPage = () => {
     },
   ])
 
+  const [loading, setLoading] = useState(false)
+
+  const router = useRouter()
+
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     console.log('questions', questions)
+    setLoading(true)
+    let noDuplicateCode = false
+    let code
+    while (!noDuplicateCode) {
+      const codeNumber = Math.floor(Math.random() * 10000)
+      code = `${codeNumber}`.padStart(4, '0')
+      const { data } = await supabase.from('rooms').select().eq('code', code).eq('is_closed', false)
+      noDuplicateCode = data!.length == 0
+    }
+    const { data: roomData } = await supabase.from('rooms').insert({ code })
+    for (const question of questions) {
+      const { data: questionData } = await supabase.from('questions').insert({
+        question: question.question,
+        answer: question.answer,
+        room_id: roomData![0].id,
+      })
+      await supabase.from('choices').insert(
+        question.choices.map((choice) => {
+          return {
+            choice: choice.choice,
+            question_id: questionData![0].id,
+            index: choice.index,
+          }
+        })
+      )
+    }
+    router.push(`/lobby/${code}`)
   }
 
   return (
@@ -68,7 +100,10 @@ const Page: NextPage = () => {
           <QuestionForm questions={questions} setQuestions={setQuestions} index={0}></QuestionForm>
           <QuestionForm questions={questions} setQuestions={setQuestions} index={1}></QuestionForm>
           <QuestionForm questions={questions} setQuestions={setQuestions} index={2}></QuestionForm>
-          <button className="text-center bg-blue-500 text-white py-2 w-full rounded">
+          <button
+            className="text-center bg-blue-500 text-white py-2 w-full rounded disabled:bg-gray-400"
+            disabled={loading}
+          >
             Submit and Go To Lobby
           </button>
         </form>
